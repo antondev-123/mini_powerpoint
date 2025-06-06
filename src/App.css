@@ -1,0 +1,104 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+}
+
+.presentation-container {
+  border: 1px solid #ccc;
+  width: 80vw;
+  height: 60vh;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.slide {
+  box-sizing: border-box;
+  padding: 2rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.slide.title-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.slide.two-columns .slide-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background-color: #eee;
+}
+
+.progress {
+  height: 100%;
+  background-color: #4caf50;
+  transition: width 0.2s;
+}
+
+.controls {
+  margin-top: 1rem;
+}
+
+.controls span {
+  place-content: center;
+}
+
+.controls button {
+  margin: 0 0.5rem;
+}
+
+.editor-container {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 80vw;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .presentation-container {
+    width: 95vw;
+    height: 50vh;
+  }
+
+  .slide {
+    padding: 1rem;
+  }
+
+  .slide.two-columns .slide-content {
+    grid-template-columns: 1fr;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .controls button {
+    margin: 0.5rem;
+  }
+
+  .editor-container {
+    width: 95vw;
+  }
+}
