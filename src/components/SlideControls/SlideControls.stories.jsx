@@ -18,4 +18,6 @@ Default.args = {
   isEditing: false,
   onNewSlide: () => console.log("New Slide Created"),
   onDeleteSlide: () => console.log("Slide Deleted"),
+  onDeleteSlide: () => console.log("Slide Deleted"),
+  deleting: false,
 };
