@@ -104,7 +104,7 @@ function App() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [slides]);
+  }, [slides, handleKeyDown]);
 
   return (
     <div className="App">
