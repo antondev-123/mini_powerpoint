@@ -9,6 +9,7 @@ const SlideControls = ({
   isEditing,
   onNewSlide,
   onDeleteSlide,
+  deleting,
 }) => (
   <div className="controls">
     <button onClick={onPrev} disabled={currentSlide === 0}>
@@ -20,8 +21,8 @@ const SlideControls = ({
     </button>
     <button onClick={onEditToggle}>{isEditing ? "Cancel" : "Edit"}</button>
     <button onClick={onNewSlide}>New Slide</button>
-    <button onClick={onDeleteSlide} disabled={totalSlides === 0}>
-      Delete Slide
+    <button onClick={onDeleteSlide} disabled={totalSlides === 0 || deleting}>
+      {deleting ? "Deleting..." : "Delete Slide"}
     </button>
   </div>
 );

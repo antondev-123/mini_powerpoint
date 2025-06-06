@@ -6,13 +6,14 @@ import SlideControls from "./components/SlideControls/SlideControls";
 import ProgressBar from "./components/ProgressBar/ProgressBar";
 import "./App.css";
 
-const API_URL = "http://localhost:3001";
+const API_URL = "https://mini-powerpoint-backend.onrender.com";
 
 function App() {
   const [slides, setSlides] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [editorContent, setEditorContent] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [editorLayout, setEditorLayout] = useState("default");
 
   useEffect(() => {
@@ -27,32 +28,66 @@ function App() {
   }, [currentSlide, slides]);
 
   const fetchSlides = async () => {
-    const response = await axios.get(`${API_URL}/slides`);
-    setSlides(response.data);
-    return response.data;
+    try {
+      const response = await axios.get(`${API_URL}/slides`);
+      setSlides(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching slides:", error);
+      return [];
+    }
   };
 
   const saveSlide = async () => {
     const slide = slides[currentSlide];
-    await axios.put(`${API_URL}/slides/${slide.id}`, {
-      content: editorContent,
-      layout: editorLayout,
-    });
-    fetchSlides();
-    setIsEditing(false);
+    try {
+      await axios.put(`${API_URL}/slides/${slide.id}`, {
+        content: editorContent,
+        layout: editorLayout,
+      });
+      await fetchSlides(); // ✅ wait for it to finish before UI continues
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error saving slide:", error);
+      alert("Failed to save slide.");
+    }
   };
 
   const newSlide = async () => {
-    await axios.post(`${API_URL}/slides`, { content: "# New Slide" });
-    const newSlides = await fetchSlides();
-    setCurrentSlide(newSlides.length > 0 ? newSlides.length - 1 : 0);
+    try {
+      await axios.post(`${API_URL}/slides`, { content: "# New Slide" });
+      const newSlides = await fetchSlides(); // ✅ ensure currentSlide is set after data update
+      setCurrentSlide(newSlides.length > 0 ? newSlides.length - 1 : 0);
+    } catch (error) {
+      console.error("Error creating slide:", error);
+      alert("Failed to create a new slide.");
+    }
   };
 
   const deleteSlide = async () => {
+    if (deleting) return;
     const slide = slides[currentSlide];
-    await axios.delete(`${API_URL}/slides/${slide.id}`);
-    fetchSlides();
-    setCurrentSlide(0);
+    if (!slide) {
+      alert("No slide to delete.");
+      return;
+    }
+    setDeleting(true);
+    try {
+      await axios.delete(`${API_URL}/slides/${slide.id}`);
+      const updatedSlides = await fetchSlides(); // ✅ update UI after deletion
+
+      // Set currentSlide to a safe index
+      if (updatedSlides.length === 0) {
+        setCurrentSlide(0);
+      } else {
+        setCurrentSlide(Math.max(0, currentSlide - 1));
+      }
+    } catch (error) {
+      console.error("Error deleting slide:", error);
+      alert("Failed to delete the slide. It may not exist on the server.");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -95,6 +130,7 @@ function App() {
         isEditing={isEditing}
         onNewSlide={newSlide}
         onDeleteSlide={deleteSlide}
+        deleting={deleting} // ✅ pass down here
       />
       {isEditing && (
         <SlideEditor
