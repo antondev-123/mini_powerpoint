@@ -1,5 +1,6 @@
 import React from "react";
 import SlideControls from "./SlideControls";
+import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Components/SlideControls",
@@ -12,12 +13,17 @@ export const Default = Template.bind({});
 Default.args = {
   currentSlide: 1,
   totalSlides: 5,
-  onPrev: () => console.log("Previous Slide"),
-  onNext: () => console.log("Next Slide"),
-  onEditToggle: () => console.log("Edit Toggled"),
+  onPrev: action("Clicked Prev"),
+  onNext: action("Clicked Next"),
+  onEditToggle: action("Toggled Edit"),
+  onNewSlide: action("New Slide"),
+  onDeleteSlide: action("Deleted Slide"),
   isEditing: false,
-  onNewSlide: () => console.log("New Slide Created"),
-  onDeleteSlide: () => console.log("Slide Deleted"),
-  onDeleteSlide: () => console.log("Slide Deleted"),
   deleting: false,
+};
+
+export const Deleting = Template.bind({});
+Deleting.args = {
+  ...Default.args,
+  deleting: true,
 };

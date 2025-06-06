@@ -1,5 +1,6 @@
 import React from "react";
 import SlideEditor from "./SlideEditor";
+import { action } from "@storybook/addon-actions";
 
 export default {
   title: "Components/SlideEditor",
@@ -12,7 +13,7 @@ export const Default = Template.bind({});
 Default.args = {
   content: "# Editable Slide",
   layout: "default",
-  onChangeContent: (val) => console.log("Content Changed:", val),
-  onChangeLayout: (val) => console.log("Layout Changed:", val),
-  onSave: () => console.log("Saved"),
+  onChangeContent: action("Changed Content"),
+  onChangeLayout: action("Changed Layout"),
+  onSave: action("Saved Slide"),
 };
