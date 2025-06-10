@@ -12,10 +12,10 @@ const SlideView = ({ content, layout }) => (
         remarkPlugins={[remarkGfm]}
         components={{
           code({ node, inline, className, children, ...props }) {
-            const match = /language-(\\w+)/.exec(className || "");
+            const match = /language-(\w+)/.exec(className || "");
             return !inline && match ? (
               <SyntaxHighlighter
-                children={String(children).replace(/\\n$/, "")}
+                children={String(children).replace(/\n$/, "")}
                 style={okaidia}
                 language={match[1]}
                 PreTag="div"

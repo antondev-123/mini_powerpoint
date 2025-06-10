@@ -34,56 +34,6 @@
   gap: 2rem;
 }
 
-.slide-content strong {
-  font-weight: bold;
-}
-
-.slide-content em {
-  font-style: italic;
-}
-
-.slide-content del {
-  text-decoration: line-through;
-}
-
-.slide-content blockquote {
-  border-left: 4px solid #ccc;
-  padding-left: 1em;
-  color: #666;
-  font-style: italic;
-}
-
-.slide-content ul {
-  padding-left: 1.5em;
-  list-style-type: disc;
-}
-
-.slide-content ol {
-  padding-left: 1.5em;
-  list-style-type: decimal;
-}
-
-.slide-content li {
-  margin-bottom: 0.3em;
-}
-
-.slide-content table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1em;
-}
-
-.slide-content th,
-.slide-content td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-}
-
-.slide-content th {
-  background-color: #f0f0f0;
-}
-
 .progress-bar {
   position: absolute;
   bottom: 0;
