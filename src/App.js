@@ -16,6 +16,7 @@ function App() {
   const [deleting, setDeleting] = useState(false);
   const [editorContent, setEditorContent] = useState("");
   const [presentationMode, setPresentationMode] = useState(false);
+  const [layout, setLayout] = useState("default");
 
   useEffect(() => {
     fetchDocument();
@@ -148,7 +149,7 @@ function App() {
         ) : (
           <div className="slide"># Welcome! Create a new slide to begin.</div>
         )}
-        <ProgressBar current={currentSlide} total={slides.length} />
+        <ProgressBar current={currentSlide} total={slides.length || 1} />
       </div>
       {!presentationMode && (
         <SlideControls
@@ -173,6 +174,8 @@ function App() {
           content={editorContent}
           onChangeContent={setEditorContent}
           onSave={saveDocument}
+          layout={layout}
+          onChangeLayout={setLayout}
         />
       )}
     </div>
