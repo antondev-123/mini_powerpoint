@@ -10,7 +10,8 @@ const SlideControls = ({
   onNewSlide,
   onDeleteSlide,
   deleting,
-  onToggleFullscreen
+  presentationMode,
+  onTogglePresentation,
 }) => (
   <div className="controls">
     <button onClick={onPrev} disabled={currentSlide === 0}>
@@ -25,7 +26,9 @@ const SlideControls = ({
     <button onClick={onDeleteSlide} disabled={totalSlides === 0 || deleting}>
       {deleting ? "Deleting..." : "Delete Slide"}
     </button>
-    <button onClick={onToggleFullscreen}>Fullscreen</button>
+    <button onClick={onTogglePresentation}>
+      {presentationMode ? "Exit Presentation" : "Start Presentation"}
+    </button>
   </div>
 );
 

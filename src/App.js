@@ -9,12 +9,13 @@ import "./App.css";
 const API_URL = "https://mini-powerpoint-backend.onrender.com";
 
 function App() {
-  const [markdown, setMarkdown] = useState(""); // Full markdown document
-  const [slides, setSlides] = useState([]); // Parsed slide sections
-  const [currentSlide, setCurrentSlide] = useState(0); // Slide index
-  const [isEditing, setIsEditing] = useState(false); // Editor toggle
-  const [deleting, setDeleting] = useState(false); // Disable delete during process
-  const [editorContent, setEditorContent] = useState(""); // Editor text
+  const [markdown, setMarkdown] = useState("");
+  const [slides, setSlides] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [editorContent, setEditorContent] = useState("");
+  const [presentationMode, setPresentationMode] = useState(false);
 
   useEffect(() => {
     fetchDocument();
@@ -105,19 +106,42 @@ function App() {
     return slides;
   };
 
-  const toggleFullscreen = () => {
+  // const toggleFullscreen = () => {
+  //   const elem = document.documentElement;
+  //   if (!document.fullscreenElement) {
+  //     elem.requestFullscreen().catch((err) => {
+  //       alert(`Error attempting fullscreen: ${err.message}`);
+  //     });
+  //   } else {
+  //     document.exitFullscreen();
+  //   }
+  // };
+
+  const togglePresentationMode = () => {
     const elem = document.documentElement;
     if (!document.fullscreenElement) {
-      elem.requestFullscreen().catch((err) => {
-        alert(`Error attempting fullscreen: ${err.message}`);
-      });
+      elem
+        .requestFullscreen()
+        .catch((err) => alert(`Error entering fullscreen: ${err.message}`));
     } else {
       document.exitFullscreen();
     }
   };
 
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      const isFullscreen = !!document.fullscreenElement;
+      setPresentationMode(isFullscreen);
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
   return (
-    <div className="App">
+    <div className={`App ${presentationMode ? "presentation-mode" : ""}`}>
       <div className="presentation-container">
         {slides.length > 0 ? (
           <SlideView content={slides[currentSlide]} />
@@ -126,23 +150,25 @@ function App() {
         )}
         <ProgressBar current={currentSlide} total={slides.length} />
       </div>
+      {!presentationMode && (
+        <SlideControls
+          currentSlide={currentSlide}
+          totalSlides={slides.length}
+          onPrev={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
+          onNext={() =>
+            setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1))
+          }
+          onEditToggle={() => setIsEditing(!isEditing)}
+          isEditing={isEditing}
+          onNewSlide={newSlide}
+          onDeleteSlide={deleteSlide}
+          deleting={deleting}
+          presentationMode={presentationMode}
+          onTogglePresentation={togglePresentationMode}
+        />
+      )}
 
-      <SlideControls
-        currentSlide={currentSlide}
-        totalSlides={slides.length}
-        onPrev={() => setCurrentSlide((prev) => Math.max(prev - 1, 0))}
-        onNext={() =>
-          setCurrentSlide((prev) => Math.min(prev + 1, slides.length - 1))
-        }
-        onEditToggle={() => setIsEditing(!isEditing)}
-        isEditing={isEditing}
-        onNewSlide={newSlide}
-        onDeleteSlide={deleteSlide}
-        deleting={deleting}
-        toggleFullscreen={toggleFullscreen}
-      />
-
-      {isEditing && (
+      {isEditing && !presentationMode && (
         <SlideEditor
           content={editorContent}
           onChangeContent={setEditorContent}

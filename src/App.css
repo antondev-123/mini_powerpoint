@@ -1,23 +1,42 @@
+* {
+  box-sizing: border-box;
+}
+
+/* General Layout */
 .App {
   display: flex;
   flex-direction: column;
   align-items: center;
-  font-family: sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f7f9fc;
+  color: #222;
+  min-height: 100vh;
+  padding: 1rem;
 }
 
+/* Slide Container */
 .presentation-container {
-  border: 1px solid #ccc;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   width: 80vw;
   height: 60vh;
   margin-top: 2rem;
+  overflow: hidden;
   position: relative;
+  transition: all 0.3s ease;
 }
 
+/* Slide Content */
 .slide {
-  box-sizing: border-box;
   padding: 2rem;
   height: 100%;
   overflow-y: auto;
+  font-size: 1.4rem;
+  line-height: 1.7;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .slide.title-slide {
@@ -34,6 +53,7 @@
   gap: 2rem;
 }
 
+/* Markdown Styles */
 .slide-content strong {
   font-weight: bold;
 }
@@ -47,20 +67,15 @@
 }
 
 .slide-content blockquote {
-  border-left: 4px solid #ccc;
+  border-left: 4px solid #aaa;
   padding-left: 1em;
   color: #666;
   font-style: italic;
 }
 
-.slide-content ul {
-  padding-left: 1.5em;
-  list-style-type: disc;
-}
-
+.slide-content ul,
 .slide-content ol {
   padding-left: 1.5em;
-  list-style-type: decimal;
 }
 
 .slide-content li {
@@ -71,6 +86,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-top: 1em;
+  font-size: 0.95rem;
 }
 
 .slide-content th,
@@ -84,6 +100,7 @@
   background-color: #f0f0f0;
 }
 
+/* Progress Bar */
 .progress-bar {
   position: absolute;
   bottom: 0;
@@ -96,42 +113,120 @@
 .progress {
   height: 100%;
   background-color: #4caf50;
-  transition: width 0.2s;
+  transition: width 0.2s ease-in-out;
 }
 
+/* Controls */
 .controls {
-  margin-top: 1rem;
-}
-
-.controls span {
-  place-content: center;
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .controls button {
-  margin: 0 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
 }
 
+.controls button:hover {
+  background-color: #0056b3;
+}
+
+.controls button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.controls span {
+  font-weight: bold;
+  padding: 0.6rem;
+}
+
+/* Editor */
 .editor-container {
-  margin-top: 1rem;
+  width: 80vw;
+  margin-top: 2rem;
   display: flex;
   flex-direction: column;
-  width: 80vw;
+  gap: 1rem;
 }
 
 textarea {
+  font-family: monospace;
   width: 100%;
-  height: 200px;
-  margin-bottom: 1rem;
+  min-height: 250px;
+  padding: 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
 }
 
+select {
+  width: 200px;
+  padding: 0.4rem;
+  font-size: 1rem;
+}
+
+.editor-container button {
+  width: fit-content;
+  padding: 0.6rem 1.2rem;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.editor-container button:hover {
+  background-color: #1e7e34;
+}
+
+/* Presentation Mode */
+.presentation-mode,
+.presentation-mode body,
+.presentation-mode html {
+  overflow: hidden !important;
+}
+
+.presentation-mode .controls,
+.presentation-mode .editor-container {
+  display: none;
+}
+
+.presentation-mode .presentation-container {
+  width: 100vw;
+  height: 100vh;
+  border: none;
+  border-radius: 0;
+  margin-top: 0;
+  box-shadow: none;
+}
+
+.presentation-mode .slide {
+  font-size: 2rem;
+  padding: 4rem;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .presentation-container {
     width: 95vw;
-    height: 50vh;
+    height: 55vh;
   }
 
   .slide {
     padding: 1rem;
+    font-size: 1.1rem;
   }
 
   .slide.two-columns .slide-content {
@@ -139,16 +234,24 @@ textarea {
   }
 
   .controls {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    gap: 0.75rem;
   }
 
   .controls button {
-    margin: 0.5rem;
+    width: 100%;
+    font-size: 1rem;
   }
 
   .editor-container {
     width: 95vw;
+  }
+
+  .editor-container button {
+    width: 100%;
+  }
+
+  textarea {
+    font-size: 0.9rem;
   }
 }
